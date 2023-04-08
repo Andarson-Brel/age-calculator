@@ -95,13 +95,7 @@
         const resuts = document.querySelectorAll(".results");
         const labels = document.querySelectorAll("label");
         const errorM = "--";
-        if (month.value > 12) {
-          erroMessageMonth.textContent = "Must be a Valid Month";
-        }
-        if (year.value > new Date().getFullYear()) {
-          errorMessageYear.textContent = "Year must be in the past";
-          console.log(new Date().getFullYear());
-        }
+
         // let validator = true;
         for (
           let i = 0;
@@ -111,7 +105,7 @@
           i < errorMessage.length;
           i++
         ) {
-          if (i.value !== "") {
+          if (inputs[i].value === "") {
             inputs[i].style.borderColor = "red";
             inputs[i].style.color = "red";
             resuts[i].style.color = "red";
@@ -120,22 +114,18 @@
             errorMessage[i].style.display = "block";
             errorMessage[i].textContent = "This field is required";
             console.log(!i.value);
+          } else if (month.value > 12) {
+            erroMessageMonth.style.color = "red";
+            erroMessageMonth.textContent = "Must be a Valid Month";
+            erroMessageMonth.style.display = "block";
+          } else if (year.value > new Date().getFullYear()) {
+            errorMessageYear.textContent = "Year must be in the past";
+            console.log(new Date().getFullYear());
           }
         }
       }
       btn.addEventListener("click", function () {
-        // inputs.forEach((i) => {
-        //   if (!i.value) {
-        //     i.style.borderColor = "red";
-
-        //     validator = false;
-        //   } else if (month.value > 12) {
-        //     month.style.borderColor = "red";
-        //     month.parentElement.querySelector("small").innerText =
-        //       "must be valid month.";
-        //     validator = false;
-        //   }
-        // });
+        validation();
 
         const combined = `${year.value}-${month.value}-${day.value}`;
 
@@ -168,45 +158,6 @@
         monthDisplay.textContent = ageInMonths;
         yearDisplay.textContent = ageInYears;
       });
-
-      // function calculateAge() {
-      //   const dob = new Date(document.getElementById("dob").value);
-      //   console.log(dob);
-      //   const today = new Date();
-
-      //   const yearsDiff = today.getFullYear() - dob.getFullYear();
-      //   const monthsDiff = today.getMonth() - dob.getMonth();
-      //   const daysDiff = today.getDate() - dob.getDate();
-
-      //   let ageInYears = yearsDiff;
-      //   let ageInMonths = monthsDiff;
-      //   let ageInDays = daysDiff;
-
-      //   if (monthsDiff < 0 || (monthsDiff === 0 && daysDiff < 0)) {
-      //     ageInYears--;
-      //     ageInMonths = 12 + monthsDiff;
-      //     if (daysDiff < 0) {
-      //       ageInMonths--;
-      //       ageInDays =
-      //         new Date(today.getFullYear(), today.getMonth(), 0).getDate() +
-      //         daysDiff;
-      //     }
-      //   } else if (monthsDiff > 0 && daysDiff < 0) {
-      //     ageInMonths--;
-      //     ageInDays =
-      //       new Date(today.getFullYear(), today.getMonth(), 0).getDate() +
-      //       daysDiff;
-      //   }
-
-      //   document.getElementById("result").innerHTML =
-      //     "Your age is " +
-      //     ageInYears +
-      //     " years, " +
-      //     ageInMonths +
-      //     " months, and " +
-      //     ageInDays +
-      //     " days old.";
-      // }
     </script>
   </body>
 </html>

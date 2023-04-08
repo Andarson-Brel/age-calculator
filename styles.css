@@ -85,3 +85,19 @@ body {
   color: red;
   display: none;
 }
+@media (max-width: 800px) {
+  .primary-container {
+    width: 100%;
+    margin: 3rem;
+    padding: 1rem;
+  }
+}
+@media (max-width: 450px) {
+  .general-form {
+    width: 100%;
+  }
+  .primary-container {
+    padding: 0.5rem;
+    margin: 2rem;
+  }
+}
