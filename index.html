@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- displays site properly based on user's device -->
+
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./assets/images/favicon-32x32.png"
+    />
+
+    <title>Frontend Mentor | Age calculator app</title>
+
+    <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
+
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <main class="main">
+      <div class="primary-container">
+        <form action="" class="general-form">
+          <div class="day-container">
+            <label for="day">DAY</label>
+            <br />
+            <input type="number" id="day" placeholder="DD" />
+            <p class="error-message-day error-message">error day</p>
+          </div>
+
+          <div class="month-container">
+            <label for="month">MONTH</label>
+            <br />
+            <input type="number" id="month" placeholder="MM" />
+            <p class="error-message error-message-month">error month</p>
+          </div>
+
+          <div class="year-container">
+            <label for="Year">YEAR</label>
+            <br />
+            <input type="number" id="year" placeholder="YYYY" />
+            <p class="error-message error-message-year">error year</p>
+          </div>
+        </form>
+        <div class="butn-container">
+          <div class="btn-line"></div>
+
+          <div class="submit-btn">
+            <img src="./assets/images/icon-arrow.svg" alt="" class="btn" />
+          </div>
+        </div>
+        <div class="display-section">
+          <h1 class="result">
+            <span class="computed-year results">--</span>Years
+          </h1>
+
+          <h1 class="result">
+            <span class="computed-month results">--</span>Months
+          </h1>
+
+          <h1 class="result">
+            <span class="computed-day results">--</span>Days
+          </h1>
+        </div>
+      </div>
+    </main>
+    <!-- <h1>Age Calculator</h1>
+    <label for="dob">Enter your date of birth:</label>
+    <input type="date" id="dob" />
+    <button onclick="calculateAge()">Calculate Age</button>
+    <p id="result"></p> -->
+
+    <script>
+      let year = document.getElementById("year");
+      let month = document.getElementById("month");
+      let day = document.getElementById("day");
+      const errorMessageDay = document.querySelector(".error-message-day ");
+      const erroMessageMonth = document.querySelector(".error-message-month");
+      const errorMessageYear = document.querySelector(".error-message-year");
+      const btn = document.querySelector(".submit-btn");
+      const errorMessage = document.querySelectorAll(".error-message");
+      const yearDisplay = document.querySelector(".computed-year");
+      const monthDisplay = document.querySelector(".computed-month");
+      const dayDisplay = document.querySelector(".computed-day");
+
+      function validation() {
+        const inputs = document.querySelectorAll("input");
+        const resuts = document.querySelectorAll(".results");
+        const labels = document.querySelectorAll("label");
+        const errorM = "--";
+        if (month.value > 12) {
+          erroMessageMonth.textContent = "Must be a Valid Month";
+        }
+        if (year.value > new Date().getFullYear()) {
+          errorMessageYear.textContent = "Year must be in the past";
+          console.log(new Date().getFullYear());
+        }
+        // let validator = true;
+        for (
+          let i = 0;
+          i < inputs.length &&
+          i < resuts.length &&
+          i < labels.length &&
+          i < errorMessage.length;
+          i++
+        ) {
+          if (i.value !== "") {
+            inputs[i].style.borderColor = "red";
+            inputs[i].style.color = "red";
+            resuts[i].style.color = "red";
+            resuts[i].textContent = errorM;
+            labels[i].style.color = "red";
+            errorMessage[i].style.display = "block";
+            errorMessage[i].textContent = "This field is required";
+            console.log(!i.value);
+          }
+        }
+      }
+      btn.addEventListener("click", function () {
+        // inputs.forEach((i) => {
+        //   if (!i.value) {
+        //     i.style.borderColor = "red";
+
+        //     validator = false;
+        //   } else if (month.value > 12) {
+        //     month.style.borderColor = "red";
+        //     month.parentElement.querySelector("small").innerText =
+        //       "must be valid month.";
+        //     validator = false;
+        //   }
+        // });
+
+        const combined = `${year.value}-${month.value}-${day.value}`;
+
+        const dob = new Date(combined);
+
+        const today = new Date();
+        const yearsDiff = today.getFullYear() - dob.getFullYear();
+        const monthsDiff = today.getMonth() - dob.getMonth();
+        const daysDiff = today.getDate() - dob.getDate();
+        let ageInYears = yearsDiff;
+        let ageInMonths = monthsDiff;
+        let ageInDays = daysDiff;
+
+        if (monthsDiff < 0 || (monthsDiff === 0 && daysDiff < 0)) {
+          ageInYears--;
+          ageInMonths = 12 + monthsDiff;
+          if (daysDiff < 0) {
+            ageInMonths--;
+            ageInDays =
+              new Date(today.getFullYear(), today.getMonth(), 0).getDate() +
+              daysDiff;
+          }
+        } else if (monthsDiff > 0 && daysDiff < 0) {
+          ageInMonths--;
+          ageInDays =
+            new Date(today.getFullYear(), today.getMonth(), 0).getDate() +
+            daysDiff;
+        }
+        dayDisplay.textContent = ageInDays;
+        monthDisplay.textContent = ageInMonths;
+        yearDisplay.textContent = ageInYears;
+      });
+
+      // function calculateAge() {
+      //   const dob = new Date(document.getElementById("dob").value);
+      //   console.log(dob);
+      //   const today = new Date();
+
+      //   const yearsDiff = today.getFullYear() - dob.getFullYear();
+      //   const monthsDiff = today.getMonth() - dob.getMonth();
+      //   const daysDiff = today.getDate() - dob.getDate();
+
+      //   let ageInYears = yearsDiff;
+      //   let ageInMonths = monthsDiff;
+      //   let ageInDays = daysDiff;
+
+      //   if (monthsDiff < 0 || (monthsDiff === 0 && daysDiff < 0)) {
+      //     ageInYears--;
+      //     ageInMonths = 12 + monthsDiff;
+      //     if (daysDiff < 0) {
+      //       ageInMonths--;
+      //       ageInDays =
+      //         new Date(today.getFullYear(), today.getMonth(), 0).getDate() +
+      //         daysDiff;
+      //     }
+      //   } else if (monthsDiff > 0 && daysDiff < 0) {
+      //     ageInMonths--;
+      //     ageInDays =
+      //       new Date(today.getFullYear(), today.getMonth(), 0).getDate() +
+      //       daysDiff;
+      //   }
+
+      //   document.getElementById("result").innerHTML =
+      //     "Your age is " +
+      //     ageInYears +
+      //     " years, " +
+      //     ageInMonths +
+      //     " months, and " +
+      //     ageInDays +
+      //     " days old.";
+      // }
+    </script>
+  </body>
+</html>
