@@ -199,7 +199,7 @@
       function getMaxDays(month) {
         switch (month) {
           case "2":
-            return 28;
+            return 29;
           case "4":
           case "6":
           case "9":
@@ -211,68 +211,86 @@
       }
 
       function validation() {
+        let validator = true;
         for (let i = 0; i < inputs.length; i++) {
           function error() {
             inputs[i].style.borderColor = "red";
             labels[i].style.color = "red";
             results[i].style.color = "red";
             results[i].textContent = errorM;
+            validator = false;
           }
           if (inputs[i].value === "") {
             error();
             inputs[i].style.color = "red";
             errorMessage[i].style.display = "block";
             errorMessage[i].textContent = "This field is required";
+            validator = false;
           } else if (month.value > 12 || month.value < 1) {
             error();
             errorMessageMonth.style.color = "red";
             errorMessageMonth.textContent = "Must be a Valid Month";
             errorMessageMonth.style.display = "block";
+            validator = false;
           } else if (year.value > new Date().getFullYear()) {
             error();
             errorMessageYear.textContent = "Year must be in the past";
             errorMessageYear.style.display = "block";
+            validator = false;
           } else if (day.value > getMaxDays(month.value) || day.value < 1) {
             error();
             errorMessageDay.style.display = "block";
             errorMessageDay.textContent = "must be a valid date";
+            validator = false;
+          } else {
+            inputs[i].style.borderColor = "black";
+            labels[i].style.color = "black";
+            results[i].style.color = "hsl(259, 100%, 65%)";
+            inputs[i].style.color = "black";
+
+            errorMessage[i].style.display = "none";
+
+            validator = true;
           }
         }
+        return validator;
       }
 
-      btn.addEventListener("click", function () {
-        validation();
-        const combined = `${year.value}-${month.value}-${day.value}`;
+      btn.addEventListener("click", function (e) {
+        e.preventDefault;
+        if (validation()) {
+          const combined = `${year.value}-${month.value}-${day.value}`;
 
-        const dob = new Date(combined);
+          const dob = new Date(combined);
 
-        const today = new Date();
-        const yearsDiff = today.getFullYear() - dob.getFullYear();
-        const monthsDiff = today.getMonth() - dob.getMonth();
-        const daysDiff = today.getDate() - dob.getDate();
-        let ageInYears = yearsDiff;
-        let ageInMonths = monthsDiff;
-        let ageInDays = daysDiff;
+          const today = new Date();
+          const yearsDiff = today.getFullYear() - dob.getFullYear();
+          const monthsDiff = today.getMonth() - dob.getMonth();
+          const daysDiff = today.getDate() - dob.getDate();
+          let ageInYears = yearsDiff;
+          let ageInMonths = monthsDiff;
+          let ageInDays = daysDiff;
 
-        if (monthsDiff < 0 || (monthsDiff === 0 && daysDiff < 0)) {
-          ageInYears--;
-          ageInMonths = 12 + monthsDiff;
-          if (daysDiff < 0) {
+          if (monthsDiff < 0 || (monthsDiff === 0 && daysDiff < 0)) {
+            ageInYears--;
+            ageInMonths = 12 + monthsDiff;
+            if (daysDiff < 0) {
+              ageInMonths--;
+              ageInDays =
+                new Date(today.getFullYear(), today.getMonth(), 0).getDate() +
+                daysDiff;
+            }
+          } else if (monthsDiff > 0 && daysDiff < 0) {
             ageInMonths--;
             ageInDays =
               new Date(today.getFullYear(), today.getMonth(), 0).getDate() +
               daysDiff;
           }
-        } else if (monthsDiff > 0 && daysDiff < 0) {
-          ageInMonths--;
-          ageInDays =
-            new Date(today.getFullYear(), today.getMonth(), 0).getDate() +
-            daysDiff;
-        }
 
-        dayDisplay.textContent = ageInDays;
-        monthDisplay.textContent = ageInMonths;
-        yearDisplay.textContent = ageInYears;
+          dayDisplay.textContent = ageInDays;
+          monthDisplay.textContent = ageInMonths;
+          yearDisplay.textContent = ageInYears;
+        }
       });
     </script>
   </body>
