@@ -74,6 +74,11 @@ body {
   border-radius: 50%;
   cursor: pointer;
 }
+.happy-birthday {
+  width: 100%;
+  margin: 1rem 0;
+  display: none;
+}
 .submit-btn:hover {
   background: #151515;
 }

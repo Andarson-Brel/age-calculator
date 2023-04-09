@@ -57,6 +57,11 @@
           </div>
         </div>
         <div class="display-section">
+          <img
+            src="./assets/images/bday-643.gif"
+            alt="birthday gif"
+            class="happy-birthday"
+          />
           <h1 class="result">
             <span class="computed-year results">--</span>Years
           </h1>
@@ -270,7 +275,16 @@
           let ageInYears = yearsDiff;
           let ageInMonths = monthsDiff;
           let ageInDays = daysDiff;
+          const dobMonth = dob.getMonth() + 1;
+          const dobDay = dob.getDate();
+          const todayMonth = today.getMonth() + 1;
+          const todayDay = today.getDate();
 
+          if (dobMonth === todayMonth && dobDay === todayDay) {
+            document.querySelector(".happy-birthday").style.display = "block";
+          } else {
+            document.querySelector(".happy-birthday").style.display = "none";
+          }
           if (monthsDiff < 0 || (monthsDiff === 0 && daysDiff < 0)) {
             ageInYears--;
             ageInMonths = 12 + monthsDiff;
